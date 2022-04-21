@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BloXmove Dev : Vehicle Integration and Management</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">BloXmove Dev</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Architecture-Overview_4492492808.html">Architecture Overview</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            BloXmove Dev : Vehicle Integration and Management
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Jan-Paul Buchwald (Unlicensed)</span>, last modified on Aug 05, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p>This page collects architectural options and input for the management and integration of vehicles including related data and services.</p><h2 id="VehicleIntegrationandManagement-FleetGateway">Fleet Gateway</h2><p>Input provided by Leam</p><div class="table-wrap"><table data-layout="default" class="confluenceTable"><colgroup><col style="width: 340.0px;"/><col style="width: 340.0px;"/></colgroup><tbody><tr><td class="confluenceTd"><p>REST API Specification</p></td><td class="confluenceTd"><p class="media-group"><span class="confluence-embedded-file-wrapper"><a class="confluence-embedded-file" href="attachments/2335342185/2335342196.pdf" data-nice-type="PDF Document" data-file-src="/wiki/download/attachments/2335342185/20201006-MBP_Fleet_Gateway_API.pdf?version=1&amp;modificationDate=1605006483759&amp;cacheVersion=1&amp;api=v2" data-linked-resource-id="2335342196" data-linked-resource-type="attachment" data-linked-resource-container-id="2335342185" data-linked-resource-default-alias="20201006-MBP_Fleet_Gateway_API.pdf" data-mime-type="application/pdf" data-has-thumbnail="true" data-linked-resource-version="1" data-media-id="54936adc-8b80-48a3-8ce7-02e208148459" data-media-type="file"><img src="attachments/thumbnails/2335342185/2335342196" height="250"/></a></span></p></td></tr><tr><td class="confluenceTd"><p>Architectural Scheme</p></td><td class="confluenceTd"><p class="media-group"><span class="confluence-embedded-file-wrapper"><a class="confluence-embedded-file" href="attachments/2335342185/2335407723.pptx" data-nice-type="Microsoft PowerPoint Presentation" data-file-src="/wiki/download/attachments/2335342185/Sharing%20Fleet%20MBP_%20T-Box%20Integration%20Prinzipskizze.pptx?version=1&amp;modificationDate=1605006527497&amp;cacheVersion=1&amp;api=v2" data-linked-resource-id="2335407723" data-linked-resource-type="attachment" data-linked-resource-container-id="2335342185" data-linked-resource-default-alias="Sharing Fleet MBP_ T-Box Integration Prinzipskizze.pptx" data-mime-type="application/vnd.openxmlformats-officedocument.presentationml.presentation" data-has-thumbnail="true" data-linked-resource-version="1" data-media-id="73a76e48-f846-4cb7-8018-c91321998a76" data-media-type="file"><img src="attachments/thumbnails/2335342185/2335407723" height="250"/></a></span></p></td></tr></tbody></table></div><p>Architecture corresponds to a combination / subset of existing (simulated) Fleet Backend and Virtual Car Wallet components, detailed integration with MBP is not yet defined.</p><span class="confluence-embedded-file-wrapper image-center-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image image-center" width="238" loading="lazy" src="attachments/2335342185/2335637100.png?width=238" data-image-src="attachments/2335342185/2335637100.png" data-height="191" data-width="256" data-unresolved-comment-count="0" data-linked-resource-id="2335637100" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-20201110-121028.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="2335342185" data-linked-resource-container-version="4" data-media-id="8321bd19-9ab6-4b97-90e9-1bd8783631ec" data-media-type="file"></span><h2 id="VehicleIntegrationandManagement-VehicleOnboardUnitIntegration">Vehicle Onboard Unit Integration</h2><p>Input provided by Nantis</p><div class="table-wrap"><table data-layout="default" class="confluenceTable"><colgroup><col style="width: 340.0px;"/><col style="width: 340.0px;"/></colgroup><tbody><tr><td class="confluenceTd"><p class="media-group"><span class="confluence-embedded-file-wrapper"><a class="confluence-embedded-file" href="attachments/2335342185/2335735409.docx" data-nice-type="Microsoft Word Document" data-file-src="/wiki/download/attachments/2335342185/MBP%20-%20OLU%20Client%20-%20Concept.nantis.docx?version=1&amp;modificationDate=1605006865896&amp;cacheVersion=1&amp;api=v2" data-linked-resource-id="2335735409" data-linked-resource-type="attachment" data-linked-resource-container-id="2335342185" data-linked-resource-default-alias="MBP - OLU Client - Concept.nantis.docx" data-mime-type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" data-has-thumbnail="true" data-linked-resource-version="1" data-media-id="8a6ba2ea-5a41-4315-b30e-b82e77d3d846" data-media-type="file"><img src="attachments/thumbnails/2335342185/2335735409" height="250"/></a></span></p><p /></td><td class="confluenceTd"><p>Concept Document Version 0.2</p></td></tr></tbody></table></div><p>Focusses on integration of physical car wallet based on OLU (On-board Logic Unit) Connect Box.</p><p>Suggested approach in two steps: first access / integration via a “Virtual Car Application” (corresponds to Virtual Car Wallet), then direct handling in Physical Car Application</p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/2335342185/2335506027.png" data-image-src="attachments/2335342185/2335506027.png" data-height="431" data-width="367" data-unresolved-comment-count="0" data-linked-resource-id="2335506027" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="OLU-Virtual.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="2335342185" data-linked-resource-container-version="4" data-media-id="f849ec2b-9ebd-4d66-986f-47d97617e549" data-media-type="file"></span><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/2335342185/2335833707.png" data-image-src="attachments/2335342185/2335833707.png" data-height="402" data-width="454" data-unresolved-comment-count="0" data-linked-resource-id="2335833707" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="OLU-Direct.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="2335342185" data-linked-resource-container-version="4" data-media-id="7b461ca8-3751-4e55-9e0f-7402d2de1220" data-media-type="file"></span><h2 id="VehicleIntegrationandManagement-HackathonPrototypeWithSodacars">Hackathon Prototype With Sodacars</h2><p>Integration of a real Smart vehicle using the Soda (<a href="https://sodacar.com/" class="external-link" rel="nofollow">https://sodacar.com/</a>) Mobility Platform Backend and an xToolTech TBox based on the existing Virtual Car Wallet Architecture and Fleet2Share scenario.</p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/2335342185/2335309423.png" data-image-src="attachments/2335342185/2335309423.png" data-height="409" data-width="870" data-unresolved-comment-count="0" data-linked-resource-id="2335309423" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Wanxiang-Hackathon-Architecture.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="2335342185" data-linked-resource-container-version="4" data-media-id="13c81578-0882-46d9-ae45-864782c10488" data-media-type="file"></span><p>Code for Virtual Car Wallet Extension allowing flexible Fleet Gateway Adapters, as an example implementing a <em>SodaAdapter</em> accessing a REST API provided by Soda: </p><p><a href="https://github.com/bloxmove-com/virtual-car-wallet/blob/master/src/adapters/soda-adapter.class.ts" class="external-link" rel="nofollow">https://github.com/bloxmove-com/virtual-car-wallet/blob/master/src/adapters/soda-adapter.class.ts</a> </p><h3 id="VehicleIntegrationandManagement-ArchitectureandRequirementsforaproduction-readySetup">Architecture and Requirements for a production-ready Setup</h3><p>The scenario outlined in the Hackathon can be simplified by controlling both the read access (getting telematics data) and the “write” access (changing state of the car, in our scenario open/close car doors) through the virtual car wallet. This would result in the following basic architecture and requirements for a SODA telematics gateway that can be called by the MBP virtual car wallet component.</p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/2335342185/4446126123.png" data-image-src="attachments/2335342185/4446126123.png" data-height="492" data-width="961" data-unresolved-comment-count="0" data-linked-resource-id="4446126123" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="2021-06-03-SODA Telematics Gateway.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="2335342185" data-linked-resource-container-version="4" data-media-id="c6b7aa06-1394-4b23-bf09-2dda218f4ca8" data-media-type="file"></span><p />
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335342196.pdf">20201006-MBP_Fleet_Gateway_API.pdf</a> (application/pdf)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335407723.pptx">Sharing Fleet MBP_ T-Box Integration Prinzipskizze.pptx</a> (application/vnd.openxmlformats-officedocument.presentationml.presentation)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335735403.png">image-20201110-121010.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335637100.png">image-20201110-121028.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335735409.docx">MBP - OLU Client - Concept.nantis.docx</a> (application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335604333.png">image-20201110-121612.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335506027.png">OLU-Virtual.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335833707.png">OLU-Direct.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/2335309423.png">Wanxiang-Hackathon-Architecture.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/4334780636.png">2021-05-06-SODA Telematics Gateway.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2335342185/4446126123.png">2021-06-03-SODA Telematics Gateway.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                 
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Apr 20, 2022 13:42</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

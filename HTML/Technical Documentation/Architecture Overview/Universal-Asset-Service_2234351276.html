@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BloXmove Dev : Universal Asset Service</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">BloXmove Dev</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Architecture-Overview_4492492808.html">Architecture Overview</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            BloXmove Dev : Universal Asset Service
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Jan-Paul Buchwald (Unlicensed)</span>, last modified on Dec 18, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h2 id="UniversalAssetService-UsingONTIDforServiceConsumer,EthrDIDsforOtherComponents">Using ONT ID for Service Consumer, Ethr DIDs for Other Components</h2><p>The following assumes a scenario where the user / consumer of the rental service has an ONT Id, and all other entities Fleet Owner (with the Fleet Node backend service acting on its behalf), Vehicle, and Rental Contract are using Ethr DIDs. Further assumed is that the user uses a mobile app where the private key and certain VCs of its ONT Id are already stored, e.g. the Welcome Home App or a more general wallet app like ONTO.</p><p>The basic onboarding flow is then handled in the frontend generating a new ONT private/public key pair in the Fleet2Share app, then jumping to an ONT App to ask the new public key to be added to the existing ONT ID and the VCs to be returned to the Fleet2Share app, where the ONT ID and VCs are stored for later usage.</p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/2234351276/4498260048.png" data-image-src="attachments/2234351276/4498260048.png" data-height="959" data-width="1200" data-unresolved-comment-count="0" data-linked-resource-id="4498260048" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="2021-12-18-ONT Wallet in F2S App.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="2234351276" data-linked-resource-container-version="6" data-media-id="8afde6ec-477c-4b1f-9387-efd7d48400fc" data-media-type="file"></span><p class="media-group"><span class="confluence-embedded-file-wrapper"><a class="confluence-embedded-file" href="attachments/2234351276/4498227256.rtf" data-nice-type="null" data-file-src="/wiki/download/attachments/2234351276/websequencediagrams-ONT%20Wallet%20in%20F2S%20App.rtf?version=1&amp;modificationDate=1639837703046&amp;cacheVersion=1&amp;api=v2" data-linked-resource-id="4498227256" data-linked-resource-type="attachment" data-linked-resource-container-id="2234351276" data-linked-resource-default-alias="websequencediagrams-ONT Wallet in F2S App.rtf" data-mime-type="text/rtf" data-has-thumbnail="true" data-linked-resource-version="1" data-media-id="483abdfd-64a6-4e22-8854-53cdfdb80267" data-media-type="file"><img src="attachments/thumbnails/2234351276/4498227256" height="250"/></a></span></p><p>After the initial onboarding, the F2S App uses the ONT ID to request a rental, presenting the claims in a Verifiable Presentation to the Fleet Node. Using the Universal Asset Service, the Fleet Node recognises that the consumer uses an ONT ID and does the necessary validations and checks towards the ONT Network. The rental contract is handled on the Ethereum Network as the layer 1 of the service provider. When it gets to confirming the contract by the user, the F2S App creates a VC with the contract DID and the topic “consumerConfirm” as the subject issued by the ONT ID. This VC is then sent to the Fleet Node and stored as an attestation on the Ethereum Network Attestation Registry Smart Contract.</p><p>The same way, the remaining parts of the rental process are handled, with the F2S App always using the ONT ID for consumer confirmations or signatures, and the Fleet Node and Virtual Car Wallet recognising the ONT related DID based on the Universal Asset Service implementation.</p><h2 id="UniversalAssetService-AssetServiceInterface">Asset Service Interface</h2><p>The current asset service TypeScript definition can be found in GitHub: <a href="https://github.com/bloxmove-com/did-asset-library/blob/master/src/services/asset.service.ts" class="external-link" rel="nofollow">https://github.com/bloxmove-com/did-asset-library/blob/master/src/services/asset.service.ts</a> </p><p>The following table lists the current operations and provides a basic specification how a support of multiple/different DID methods should be achieved.</p><p>It is assumed that the configuration of the component using the asset service (e.g. a backend service) must point to a particular account and DID, thus defining which DID method and related ledger network the “current account” uses.</p><div class="table-wrap"><table data-layout="default" data-local-id="44ac302c-8fbe-42fb-aa64-7cb2ff31dec5" class="confluenceTable"><colgroup><col style="width: 252.0px;"/><col style="width: 454.0px;"/><col style="width: 54.0px;"/></colgroup><tbody><tr><th class="confluenceTh"><p><strong>Operation</strong></p></th><th class="confluenceTh"><p><strong>Specification</strong></p></th><th class="confluenceTh"><p><strong>Prio</strong></p></th></tr><tr><td class="confluenceTd"><p>init()</p></td><td class="confluenceTd"><p>Calls init for all supported DID methods that require an initialization</p></td><td class="confluenceTd"><p>1</p></td></tr><tr><td class="confluenceTd"><p>createAsset(assetName, initialDataProperties, assetType?) → new asset DID</p></td><td class="confluenceTd"><p>Asset created in same network as current account DID</p></td><td class="confluenceTd"><p>2</p></td></tr><tr><td class="confluenceTd"><p>addInvolvedParties(assetDID, involvedPartiesDIDs, permissions)<br/><span style="color: rgb(54,179,126);">addInvolvedPartiesByPublicKey(assetDID, involvedPartiesPublicKeys, permissions)</span></p></td><td class="confluenceTd"><p>DID method of current account, asset and involved party must be the same, uses network according to this DID method<br/><span style="color: rgb(54,179,126);">New variant to add involved parties based on their public key</span><br/><span style="color: rgb(54,179,126);">Interface of permissions attribute is extended to contain different attributes of the DID document the involved party is added to (e.g. </span><code>publicKey</code><span style="color: rgb(54,179,126);">, </span><code>authentication</code><span style="color: rgb(54,179,126);">, </span><code>controller</code><span style="color: rgb(54,179,126);">, `</span><code>recovery</code><span style="color: rgb(54,179,126);">)</span></p></td><td class="confluenceTd"><p>3</p></td></tr><tr><td class="confluenceTd"><p>getInvolvedParties(assetDID) → DIDs<br/>getOwner(assetDID) → DID<br/>getDataProperty(assetDID, key, assetType?) → string</p></td><td class="confluenceTd"><p>Uses network according to DID method of asset DID</p></td><td class="confluenceTd"><p>3</p></td></tr><tr><td class="confluenceTd"><p>createDataProperty(assetDID, key, value, assetType?, changable?)<br/>updateDataProperty(assetDID, key, value, assetType?)</p></td><td class="confluenceTd"><p>DID method of current account and asset must be the same, uses network according to this DID method</p></td><td class="confluenceTd"><p>3</p></td></tr><tr><td class="confluenceTd"><p>getAttestations(assetDID, topic) → list of attestation objects</p></td><td class="confluenceTd"><p>Uses network according to DID method of asset DID</p></td><td class="confluenceTd"><p>1*</p></td></tr><tr><td class="confluenceTd"><p>setAttestation(assetDID, topic, externalVC)</p></td><td class="confluenceTd"><p>DID method of current account and asset must be the same, this determines the network where the attestation is stored<br/></p></td><td class="confluenceTd"><p>3</p></td></tr><tr><td class="confluenceTd"><p>resolveName(name) → DID<br/>setName(name, assetDID)</p></td><td class="confluenceTd"><p><span style="color: rgb(54,179,126);">Uses a global name service or namespace defined and governed by the Mobility Blockchain Platform that supports arbitrary name ↔︎ DID mappings, could be even made off-chain or permissioned for data privacy reasons</span></p></td><td class="confluenceTd"><p>3</p></td></tr><tr><td class="confluenceTd"><p>verifySignature(signerDID, message, signature) → boolean</p></td><td class="confluenceTd"><p>Uses (default) signature method based on signer DID</p></td><td class="confluenceTd"><p>1</p></td></tr><tr><td class="confluenceTd"><p>signMessage(message) → string</p></td><td class="confluenceTd"><p>Uses (default) signature and DID method of current account</p></td><td class="confluenceTd"><p>1</p></td></tr><tr><td class="confluenceTd"><p>isValidDID(assetDID) → boolean<br/>getDIDDocument(assetDID) → JSON<br/>setDIDDocument(didDocument)</p></td><td class="confluenceTd"><p>Uses network according to DID method of asset DID</p></td><td class="confluenceTd"><p>2</p></td></tr><tr><td class="confluenceTd"><p>createVerifiableCredential(type, credentialSubject, expirationDate<span style="color: rgb(54,179,126);">?</span>, proofPurpose?) → VC <span style="color: rgb(54,179,126);">| string</span><br/>createVerifiablePresentation(VC[] <span style="color: rgb(54,179,126);">| string[]</span>, <span style="color: rgb(54,179,126);">expirationDate?</span>, proofPurpose?) → VP <span style="color: rgb(54,179,126);">| string</span></p></td><td class="confluenceTd"><p>Uses DID method of current account for the signer of the VC or VP<span style="color: rgb(54,179,126);">, must support both JSON-LD (object) or JWT (string) VC and VP formats</span></p></td><td class="confluenceTd"><p>1</p></td></tr><tr><td class="confluenceTd"><p><span style="color: rgb(255,86,48);"><del>isVerifiablePresentationValid(signerDID, VP) → boolean</del></span></p></td><td class="confluenceTd"><p><span style="color: rgb(255,86,48);">Removed in favor of validateVerifiablePresentation (see below)</span></p></td><td class="confluenceTd"><p>1</p></td></tr><tr><td class="confluenceTd"><p><span style="color: rgb(54,179,126);">validateVerifiableCredential(VC | string) → VC | null</span></p></td><td class="confluenceTd"><p><span style="color: rgb(54,179,126);">Validates the VC (can be both JSON-LD or JWT format) in terms of expiration, signature, and returns the VC object if the information is valid</span></p></td><td class="confluenceTd"><p>1</p></td></tr><tr><td class="confluenceTd"><p><span style="color: rgb(54,179,126);">validateVerifiablePresentation(VP | string, expectedSignerDID) → VC[]</span></p></td><td class="confluenceTd"><p><span style="color: rgb(54,179,126);">Validates the VP (can be both JSON-LD or JWT format) in terms of expiration and signatures, returns list of contained VC objects if valid</span></p></td><td class="confluenceTd"><p>1</p></td></tr></tbody></table></div><p>*priority only relates to the Ethereum network</p><p>All priority 1 elements have been implemented as part of the moveX@ONT scenario for the Startup Autobahn Expo Day in September 2020. Priority 2 and 3 elements are implemented in the Universal Asset Service, but mostly missing the implementation in the Ontology Asset Service and thus would not work if called for an ONT DID.</p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2234351276/2234318497.png">2020-08-21-Verifiable Credential Issuance and Validation.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2234351276/2245525097.png">ONT Wallet in F2S App.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2234351276/4498260048.png">2021-12-18-ONT Wallet in F2S App.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/2234351276/4498227256.rtf">websequencediagrams-ONT Wallet in F2S App.rtf</a> (text/rtf)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                 
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Apr 20, 2022 13:42</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,33 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2580
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11360\viewh8740\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 title ONT Wallet in F2S App\
+\
+note right of WH App: User already registered an ONT Id, private key and\\nreceived VCs of claims are stored in WH app\
+seq Initialisation before first rental\
+note right of F2S App: User chooses "Login with Welcome Home"\
+F2S App->F2S App: Create new private and public key (ONT)\
+F2S App->WH App: App Deeplink:\\nRequest ONT Id claims and adding of new public key\
+note right of WH App: User confirms to map ONT Id and share claims with F2S\
+WH App->ONT Network: Add F2S public key to user's existing ONT Id\
+WH App->F2S App: App Deeplink:\\nONT Id, VCs containing user claims\
+note right of F2S App: Store ONT Id and VCs in wallet\
+end\
+\
+seq start rental\
+F2S App->Fleet Node: Request rental offer (vehicleDID, VP of VCs for claims)\
+Fleet Node->ONT Network: Validate ONT Id and VP\
+Fleet Node->Ethereum Network: Create Rental Contract\
+Ethereum Network->Fleet Node: Contract DID (ethr)\
+Fleet Node->F2S App: Confirm Offer (Contract DID)\
+F2S App->F2S App: Issue VC on Contract DID\\nto confirm contract\
+F2S App->Fleet Node: Confirm Contract(contractDID, VC)\
+Fleet Node-> ONT Network: Validate ONT Id and signature\
+Fleet Node-> Ethereum Network: Validate contract DID, confirm contract\
+Fleet Node-> F2S App: Confirm contract\
+note right of Fleet Node: ... continues with rental process ...\
+end}

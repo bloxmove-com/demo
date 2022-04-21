@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BloXmove Dev : Settlement Process</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">BloXmove Dev</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Architecture-Overview_4492492808.html">Architecture Overview</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            BloXmove Dev : Settlement Process
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Jan-Paul Buchwald (Unlicensed)</span>, last modified on Dec 18, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p>The bloXmove platform should provide a pluggable, flexible settlement mechanism for tracking liabilities and allowing payment as well as netting between single parties involved in a business transaction. In order to provide a well-designed abstraction, the following alternatives are to be considered.</p><h2 id="SettlementProcess-PushtoSettlementService">Push to Settlement Service</h2><h3 id="SettlementProcess-Principle">Principle</h3><p>The business logic orchestrates calls to an abstract <em>Settlement Service</em> (library) at relevant parts of the flow and connects the settlement information to the asset layer by storing references in both ways. A particular smartVIN implementation of the <em>Settlement Service</em> would dispatch the calls to the respective operations on a smartVIN node.</p><h3 id="SettlementProcess-Schema">Schema</h3><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1555201666/1554874007.png" data-image-src="attachments/1555201666/1554874007.png" data-height="521" data-width="961" data-unresolved-comment-count="0" data-linked-resource-id="1554874007" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Settlement-Options-Push-v0.1.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1555201666" data-linked-resource-container-version="5" data-media-id="184f6833-5534-4ab7-9a14-29c457c7d1ab" data-media-type="file"></span><h3 id="SettlementProcess-Pros">Pros</h3><ul><li><p>Settlement information is pushed in realtime</p></li><li><p>Business logic is in control of settlement</p></li></ul><h3 id="SettlementProcess-Cons">Cons</h3><ul><li><p>Business Logic has a dependency on settlement details</p></li><li><p>Since parts of the flow are duplicated, there is a risk of running out of sync between asset and settlement layer if business logic contains errors, expensive failure/retry management necessary</p></li></ul><h3 id="SettlementProcess-Variants">Variants</h3><p>Rather than implementing and integrating the <em>Settlement Service</em> as a (synchronous) library or API, it could also be implemented as or make use of a <strong>Message Queue</strong> to facilitate a more optimized asynchronous handling and simplified retry handling. The Business Logic could then essentially just push settlement related messages in a defined and standardized format into the queue.</p><h2 id="SettlementProcess-PullwithSettlementAgent">Pull with Settlement Agent</h2><h3 id="SettlementProcess-Principle.1">Principle</h3><p>The business logic only takes care of the transactions in the asset layer which provide a traceable record of all activities relevant for later settlement. An independent <em>Settlement Agent</em> regularly or upon explicit trigger fetches all required information from the asset layer, calculates the liabilities from that information, stores the liabilities in the settlement system, and sets references to the settlement transactions in the asset layer. A particular smartVIN implementation of the <em>Settlement Agent</em> would dispatch the calls to the respective operations on a smartVIN node.</p><h3 id="SettlementProcess-Schema.1">Schema</h3><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1555201666/1555889771.png" data-image-src="attachments/1555201666/1555889771.png" data-height="541" data-width="961" data-unresolved-comment-count="0" data-linked-resource-id="1555889771" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Settlement-Options-Pull-v0.2.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1555201666" data-linked-resource-container-version="5" data-media-id="239b59b8-5ce1-49fa-9680-268941c2375b" data-media-type="file"></span><h3 id="SettlementProcess-Pros.1">Pros</h3><ul><li><p>Settlement process runs independently from business logic in an own transactional context</p></li><li><p>Possible re-use of settlement logic across multiple scenarios</p></li></ul><h3 id="SettlementProcess-Cons.1">Cons</h3><ul><li><p>Near-Realtime processing requires high frequency of pulling</p></li><li><p>Settlement Agent is separate component or module that needs to be managed and maintained</p></li></ul><h3 id="SettlementProcess-Variants.1">Variants</h3><p>The <em>Settlement Agent</em> could be implemented as a</p><ol><li><p>stand-alone service or </p></li><li><p>as module within the fleet node</p></li></ol><p>Number 1 has the advantage of possible re-use across components, but the disadvantage of operating a separate service.</p><h2 id="SettlementProcess-InterledgerSynchronization">Interledger Synchronization</h2><h3 id="SettlementProcess-Principle.2">Principle</h3><p>Business Logic and settlement are completely separated components associated to a ledger (e.g. contract flow to the Evan ledger, settlement to the smartVIN/Corda ledger). The connection between the two spheres is established on the ledger level by exchanging core business facts in a standardized format (e.g. modelled as non-fungible tokens) using an interledger protocol like Cosmos. In the simple case the ledgers are connected through direct bilateral connections, in advanced scenarios an additional interledger network like Cosmos Hub can be used to connect more than two ledgers.</p><h3 id="SettlementProcess-Schema.2">Schema</h3><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1555201666/1656389233.jpg" data-image-src="attachments/1555201666/1656389233.jpg" data-height="581" data-width="961" data-unresolved-comment-count="0" data-linked-resource-id="1656389233" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Settlement-Options-Interledger-v0.1.jpg" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/jpeg" data-linked-resource-container-id="1555201666" data-linked-resource-container-version="5" data-media-id="895b6eb8-778e-4122-bb9e-ede7167c8cc2" data-media-type="file"></span><h3 id="SettlementProcess-Pros.2">Pros</h3><ul><li><p>Maximum decoupling between business logic and settlement</p></li><li><p>Approach can be relatively easily extended to other ledgers or business logic architectures (for integration with other Blockchain-based mobility platforms or ecosystem)</p></li></ul><h3 id="SettlementProcess-Cons.2">Cons</h3><ul><li><p>Interledger solutions are “cutting-edge” technology, especially integration of permissioned networks like Corda are challenging and expensive to implement</p></li></ul>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1555201666/1554874007.png">Settlement-Options-Push-v0.1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1555201666/1554906783.png">Settlement-Options-Pull-v0.1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1555201666/1555889771.png">Settlement-Options-Pull-v0.2.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1555201666/1656389233.jpg">Settlement-Options-Interledger-v0.1.jpg</a> (image/jpeg)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                 
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Apr 20, 2022 13:42</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BloXmove Dev : Business Process Modeling and Engine</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">BloXmove Dev</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Architecture-Overview_4492492808.html">Architecture Overview</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            BloXmove Dev : Business Process Modeling and Engine
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Jan-Paul Buchwald (Unlicensed)</span>, last modified on Dec 18, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p>In order to establish a common language between business and technical implementation, as well as improve the structure, maintainability and re-usability of the source code, a business process execution engine can be used to orchestrate the main business logic based on workflows modelled in the BPMN 2.0 (<a href="https://www.omg.org/spec/BPMN/2.0/About-BPMN/" class="external-link" rel="nofollow">https://www.omg.org/spec/BPMN/2.0/About-BPMN/</a>) notation.</p><h2 id="BusinessProcessModelingandEngine-ArchitecturePrinciple">Architecture Principle</h2><p>The following diagram shows the usage of a business process engine in the context of the Fleet2Share scenario: both Service Consumer (User Mobility App) and Service Provider (Fleet Node) have a business process engine embedded. The Service Consumer basically triggers the Human Tasks and exchanges messages with the Service Provider part of the process, which could be routed through some REST API Facade on the Service Provider side.</p><p>The main business logic is realised by Service Tasks in the process of the Service Provider. The Service Tasks can be implemented by code running on the same machine, or by calling remote (micro-)services via a service connector. This allows to provide predefined building blocks of task implementations or service calls that can be re-used in many business processes.</p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1656159887/1660714626.jpg" data-image-src="attachments/1656159887/1660714626.jpg" data-height="697" data-width="1021" data-unresolved-comment-count="0" data-linked-resource-id="1660714626" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="BusinessProcessEngine-v0.1.jpg" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/jpeg" data-linked-resource-container-id="1656159887" data-linked-resource-container-version="5" data-media-id="179b7010-9cdc-40d4-a4f4-e304443d1ead" data-media-type="file"></span><p>The BPMN diagram is modelled graphically using a tool like <a href="https://camunda.com/download/modeler/" class="external-link" rel="nofollow">Camunda Modeler</a>, which includes references of tasks to particular implementation classes, functions, or service calls. It is then exported as an XML document which can be imported to the business process engine, and executed assumed that all referenced implementations and service connectors are available in the context of the execution engine.</p><h2 id="BusinessProcessModelingandEngine-PointsofDiscussion">Points of Discussion</h2><ul><li><p>Protocol to communicate between participants of the process</p><ul><li><p>Synchronous HTTP (REST, GraphQL)</p></li><li><p>Synchronous WebSockets</p></li><li><p>Asynchronous Messages (WebSockets, Message Queue)</p></li></ul></li><li><p>Particular implementation of business process engine</p><ul><li><p>Basically all enterprise BPMN engines are based on Java (most prominent <a href="https://camunda.com/" class="external-link" rel="nofollow">Camunda</a>), would require to migrate most of the MBP stack to Java if Service Tasks should be implemented with code</p></li><li><p>Alternative would be to use a stand-alone BPMN engine as a pure service orchestrator, e.g. <a href="https://zeebe.io/" class="external-link" rel="nofollow">Zeebe</a>, and provide the required steps as micro-service operations</p></li><li><p>There is a BPMN engine implementation in JavaScript (<a href="https://www.npmjs.com/package/bpmn-engine" class="external-link" rel="nofollow">https://www.npmjs.com/package/bpmn-engine</a>), however this seems to be a rather lightweight single-maintainer project that should be carefully evaluated before usage in an enterprise context</p></li></ul></li></ul><h2 id="BusinessProcessModelingandEngine-EvaluationofBusinessProcessEngines">Evaluation of Business Process Engines</h2><p>Based on the last discussion point of the previous section, the <code>bpmn-engine</code> npm library and Zeebe were evaluated in more detail. The evaluation mainly comprised a sample code project for each of the two, the results have been packaged and briefly documented in the attached source code project mbp-bpmn-samples.</p><p class="media-group"><span class="confluence-embedded-file-wrapper"><a class="confluence-embedded-file" href="attachments/1656159887/4498260008.zip" data-nice-type="Zip Archive" data-file-src="/wiki/download/attachments/1656159887/mbp-bpmn-samples.zip?version=1&amp;modificationDate=1639836439898&amp;cacheVersion=1&amp;api=v2" data-linked-resource-id="4498260008" data-linked-resource-type="attachment" data-linked-resource-container-id="1656159887" data-linked-resource-default-alias="mbp-bpmn-samples.zip" data-mime-type="application/zip" data-has-thumbnail="true" data-linked-resource-version="1" data-media-id="34667c35-f19a-4496-9783-d85ca37de789" data-media-type="file"><img src="attachments/thumbnails/1656159887/4498260008" height="250"/></a></span></p><p>The evaluation revealed <strong>Zeebe</strong> as a suitable solution allowing an independent management and orchestration of business process with good integration into many programming languages and frameworks, including nest.js. Processes can be modelled using the <a href="https://github.com/zeebe-io/zeebe-modeler/releases" class="external-link" rel="nofollow">Zeebe Modeler</a>, which supports only a subset of the full BPMN notation. However this is not considered a limitation, since automated steps are modelled with service tasks that are implemented by so-called <a href="https://docs.zeebe.io/basics/job-workers.html" class="external-link" rel="nofollow">job workers</a>, and asynchronous interruptions of the process (e.g. human interaction) are modelled with events that can be triggered using the Zeebe API.</p><p>The <code>bpmn-engine</code> disqualified due to the fact that it is a pure execution engine that does not come with state handling or persistence, only allowing to serialize and deserialize process state in order to implement own persistence mechanisms.</p><h2 id="BusinessProcessModelingandEngine-NextSteps">Next Steps </h2><p>As a next step, Zeebe should be further explored in practice with a real use case, starting by modelling the respective business process with Zeebe modeler, and then implementing the single service tasks as reusable job worker functions.</p><h2 id="BusinessProcessModelingandEngine-Attachments">Attachments</h2><div class="table-wrap"><table data-layout="default" data-local-id="6a256785-a0f2-463b-a3d2-c0e9045da31f" class="confluenceTable"><colgroup><col style="width: 170.0px;"/><col style="width: 170.0px;"/><col style="width: 170.0px;"/><col style="width: 170.0px;"/></colgroup><tbody><tr><th class="confluenceTh"><p><strong>File</strong></p></th><th class="confluenceTh"><p><strong>Description</strong></p></th><th class="confluenceTh"><p><strong>Date</strong></p></th><th class="confluenceTh"><p><strong>Authors</strong></p></th></tr><tr><td class="confluenceTd"><p class="media-group"><span class="confluence-embedded-file-wrapper"><a class="confluence-embedded-file" href="attachments/1656159887/2047147625.xlsx" data-nice-type="Microsoft Excel Spreadsheet" data-file-src="/wiki/download/attachments/1656159887/2020-07-28-MBP-Process-steps.xlsx?version=2&amp;modificationDate=1595941478859&amp;cacheVersion=1&amp;api=v2" data-linked-resource-id="2047147625" data-linked-resource-type="attachment" data-linked-resource-container-id="1656159887" data-linked-resource-default-alias="2020-07-28-MBP-Process-steps.xlsx" data-mime-type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-has-thumbnail="true" data-linked-resource-version="2" data-media-id="55574e7c-f4e1-4c57-be70-66c47a0e79d3" data-media-type="file"><img src="attachments/thumbnails/1656159887/2047147625" height="250"/></a></span></p></td><td class="confluenceTd"><p>Excel List of process steps for vehicle rental and vehicle registrations</p></td><td class="confluenceTd"><p>2020-07-28</p></td><td class="confluenceTd"><p><a class="confluence-userlink user-mention" data-username="5a50d761e067544f89dbeeb1" data-account-id="5a50d761e067544f89dbeeb1" href="https://bloxmove.atlassian.net/wiki/people/5a50d761e067544f89dbeeb1?ref=confluence" target="_blank" data-base-url="https://bloxmove.atlassian.net/wiki">Jan-Paul Buchwald (Unlicensed)</a> </p></td></tr><tr><td class="confluenceTd"><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1656159887/2295791209.png" data-image-src="attachments/1656159887/2295791209.png" data-height="401" data-width="799" data-unresolved-comment-count="0" data-linked-resource-id="2295791209" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="BPMN Integration Flow.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1656159887" data-linked-resource-container-version="5" data-media-id="5bc6d7fd-dd07-4c5c-adb7-099062d820d5" data-media-type="file"></span><p /></td><td class="confluenceTd"><p>The Fleet Backend should not be (as possible as it can be) not be change when integrating the BPMN Engine, to save efforts and reusability for other workflow and workers. A Facade Services that can contain one or more few calls to BPMN services is necessary to make it compact and business focus services.</p></td><td class="confluenceTd"><p>2020-10-29</p></td><td class="confluenceTd"><p><a class="confluence-userlink user-mention" data-username="557058:7f3b2055-058a-4f86-85ad-d96a999d85a4" data-account-id="557058:7f3b2055-058a-4f86-85ad-d96a999d85a4" href="https://bloxmove.atlassian.net/wiki/people/557058:7f3b2055-058a-4f86-85ad-d96a999d85a4?ref=confluence" target="_blank" data-base-url="https://bloxmove.atlassian.net/wiki">david batalla (Unlicensed)</a> </p></td></tr></tbody></table></div><p /><p />
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1656159887/1660714626.jpg">BusinessProcessEngine-v0.1.jpg</a> (image/jpeg)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1656159887/2047213161.xlsx">2020-07-28-MBP-Process-steps.xlsx</a> (application/vnd.openxmlformats-officedocument.spreadsheetml.sheet)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1656159887/2047147625.xlsx">2020-07-28-MBP-Process-steps.xlsx</a> (application/vnd.openxmlformats-officedocument.spreadsheetml.sheet)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1656159887/2295791209.png">BPMN Integration Flow.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1656159887/4498260008.zip">mbp-bpmn-samples.zip</a> (application/zip)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                 
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Apr 20, 2022 13:42</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

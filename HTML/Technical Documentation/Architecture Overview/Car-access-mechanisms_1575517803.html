@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BloXmove Dev : Car access mechanisms</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">BloXmove Dev</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Architecture-Overview_4492492808.html">Architecture Overview</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            BloXmove Dev : Car access mechanisms
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Alexander Balz</span>, last modified by <span class='editor'> Jan-Paul Buchwald (Unlicensed)</span> on May 04, 2020
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <p>Car access can be either controlled via the Virtual Car Wallet connected to a Telematics Gateway, or using a Hardware Car Wallet directly in the car.</p><p>Together with different options for gathering telematics data from the car, this results in the following three scenarios (also see original slides as attachment to this page):</p><h2 id="Caraccessmechanisms-1)VirtualCarWalletforAccessControl,HardwareWalletforTelematicsData">1) Virtual Car Wallet for Access Control, Hardware Wallet for Telematics Data</h2><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1575517803/1812397679.png" data-image-src="attachments/1575517803/1812397679.png" data-height="535" data-width="1016" data-unresolved-comment-count="0" data-linked-resource-id="1812397679" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-20200504-143324.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1575517803" data-linked-resource-container-version="2" data-media-id="4d7b675f-e4a2-40d6-bcbc-6435cd69a22e" data-media-type="file"></span><h2 id="Caraccessmechanisms-2)NoTelematicsGateway,MobileAppdirectlyinteractingwithHardwareWalletforAccessControl">2) No Telematics Gateway, Mobile App directly interacting with Hardware Wallet for Access Control</h2><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1575517803/1812332143.png" data-image-src="attachments/1575517803/1812332143.png" data-height="542" data-width="1016" data-unresolved-comment-count="0" data-linked-resource-id="1812332143" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-20200504-143350.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1575517803" data-linked-resource-container-version="2" data-media-id="d119ee53-4a38-425c-9da0-7d4766d3d322" data-media-type="file"></span><h2 id="Caraccessmechanisms-3)VirtualCarWalletforAccessControlandTelematicsData,noHardwareWallet">3) Virtual Car Wallet for Access Control and Telematics Data, no Hardware Wallet</h2><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1575517803/1812168301.png" data-image-src="attachments/1575517803/1812168301.png" data-height="542" data-width="1016" data-unresolved-comment-count="0" data-linked-resource-id="1812168301" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-20200504-143410.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1575517803" data-linked-resource-container-version="2" data-media-id="acba6db5-6f3c-4305-9d7b-20a4a0eb53e4" data-media-type="file"></span><p>The favoured approach is scenario 2, however due to restrictions in terms of in-car security the “mixed” scenario 1 is likely for the European Union. For testing and development, we currently employ scenario 3 with a simulated/mocked telematics gateway and telematics box.</p><p class="media-group"><span class="confluence-embedded-file-wrapper"><a class="confluence-embedded-file" href="attachments/1575517803/1812233848.pptx" data-nice-type="Microsoft PowerPoint Presentation" data-file-src="/wiki/download/attachments/1575517803/2020-04-17-MBPv1.0-Car%20Wallet%20Options.pptx?version=1&amp;modificationDate=1588595879637&amp;cacheVersion=1&amp;api=v2" data-linked-resource-id="1812233848" data-linked-resource-type="attachment" data-linked-resource-container-id="1575517803" data-linked-resource-default-alias="2020-04-17-MBPv1.0-Car Wallet Options.pptx" data-mime-type="application/vnd.openxmlformats-officedocument.presentationml.presentation" data-has-thumbnail="true" data-linked-resource-version="1" data-media-id="9ce24430-9d4c-4178-a50c-440c7cdac199" data-media-type="file"><img src="attachments/thumbnails/1575517803/1812233848" height="250"/></a></span></p><p />
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1575517803/1812397679.png">image-20200504-143324.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1575517803/1812102772.png">image-20200504-143324.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1575517803/1812332143.png">image-20200504-143350.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1575517803/1812168301.png">image-20200504-143410.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1575517803/1812233848.pptx">2020-04-17-MBPv1.0-Car Wallet Options.pptx</a> (application/vnd.openxmlformats-officedocument.presentationml.presentation)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                 
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Apr 20, 2022 13:42</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BloXmove Dev : Generalized Contracting Flow</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first">
+                                <span><a href="index.html">BloXmove Dev</a></span>
+                            </li>
+                                                    <li>
+                                <span><a href="Architecture-Overview_4492492808.html">Architecture Overview</a></span>
+                            </li>
+                                                </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            BloXmove Dev : Generalized Contracting Flow
+                        </span>
+                    </h1>
+                </div>
+
+                <div id="content" class="view">
+                    <div class="page-metadata">
+                        
+        
+    
+        
+    
+        
+        
+            Created by <span class='author'> Jan-Paul Buchwald (Unlicensed)</span>, last modified on Dec 18, 2021
+                        </div>
+                    <div id="main-content" class="wiki-content group">
+                    <h2 id="GeneralizedContractingFlow-SingleContract">Single Contract</h2><p>Based on the asset and attestation concept described in the <a href="Core-mechanisms_1593933450.html" data-linked-resource-id="1593933450" data-linked-resource-version="3" data-linked-resource-type="page">Core mechanisms</a> , the basic contracting flow consists of the following assets (all represented by DID) and a series of attestations:</p><ul><li><p><em>Consumer</em>: requesting and consuming a service</p></li><li><p><em>Provider</em>: offering and granting a service</p></li><li><p><em>Contract asset</em>: created by the provider who then becomes the owner of the asset, having a mandatory <code>contractData</code> property containing information about the content of the contract</p></li><li><p>Optional <em>third party</em> assets: additional parties involved in a contract, e.g. the vehicle asset in a rental contract</p></li></ul><p>The flow and attestations are depicted in the following diagram:</p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1575616272/1575780026.png" data-image-src="attachments/1575616272/1575780026.png" data-height="621" data-width="1011" data-unresolved-comment-count="0" data-linked-resource-id="1575780026" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Generic-Contract-Flow-Abstract Schema-v1.0.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1575616272" data-linked-resource-container-version="3" data-media-id="94f344ea-c6e0-425a-a697-83664b4f9757" data-media-type="file"></span><h3 id="GeneralizedContractingFlow-Contractcreationandstart">Contract creation and start</h3><ol><li><p><em>Consumer</em> requests a contract indicating the service it wants to book and its consumer DID</p></li><li><p><em>Provider</em> validates the request and creates a contract with the required contract data, after creation receives the DID of the new contract asset</p></li><li><p><em>Provider</em> sets a <em>offerConfirm</em> attestation on the contract asset</p></li><li><p><em>Provider</em> returns contract DID to <em>Consumer</em></p></li><li><p><em>Consumer</em> signs <em>consumerConfirm</em> attestation on the contract asset and sends it to <em>Provider</em></p></li><li><p><em>Provider</em> validates <em>consumerConfirm</em> attestation and sets it on behalf of the <em>Consumer</em></p></li><li><p><em>Provider</em> sets <em>providerConfirm</em> attestation on the contract asset</p></li><li><p>Optional: <em>Provider</em> adds further involved parties to the contract asset, involved parties can then also set attestations to the contract asset</p></li></ol><p>With all above required attestations in place, the contract is confirmed and active.</p><h3 id="GeneralizedContractingFlow-Contractend">Contract end</h3><ol><li><p><em>Consumer</em> requests end of contract indicating the contract DID and a Consumer signature</p></li><li><p><em>Provider</em> validates Consumer signature, determines usage data including an optional proof of the data (like signatures or hashes of raw data) and final price, sets the usage data in the contract asset</p></li><li><p><em>Provider</em> sets <em>providerEndConfirm</em> attestation on the contract asset, returns usage data to <em>Consumer</em></p></li><li><p>Optional: <em>Consumer</em> signs <em>consumerEndConfirm</em> attestation on the contract asset and sends it to <em>Provider</em></p></li><li><p>Optional: <em>Provider</em> validates <em>consumerEndConfirm</em> attestation and sets in on behalf of the <em>Consumer</em></p></li></ol><h2 id="GeneralizedContractingFlow-CombiningContracts">Combining Contracts</h2><p>This generalised flow of a contract start and end can now be applied in many different scenarios, including combinations of contracts in various ways, e.g. in a B2C + B2B backfill scenario as the following:</p><span class="confluence-embedded-file-wrapper image-center-wrapper"><img class="confluence-embedded-image image-center" loading="lazy" src="attachments/1575616272/1575616300.png" data-image-src="attachments/1575616272/1575616300.png" data-height="243" data-width="801" data-unresolved-comment-count="0" data-linked-resource-id="1575616300" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="Generic-Contract-Flow-B2C+B2B Example-v1.0.png" data-base-url="https://bloxmove.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="1575616272" data-linked-resource-container-version="3" data-media-id="6055e8ef-a670-4cfc-a3a5-c551fc7e01ad" data-media-type="file"></span><ul><li><p><em>User A</em> requests a contract from <em>MSP B</em>, resulting in <em>Contract A ↔︎ B</em> with <em>User A</em> as the <em>Consumer</em> and <em>MSP B</em> as the <em>Provider</em>.</p></li><li><p>To fulfil the duties towards <em>User A</em>, <em>MSP B</em> requests another contract from <em>Fleet Owner C</em>, resulting in a <em>Contract B ↔︎ C</em> with <em>MSP B</em> as the <em>Consumer</em> and <em>Fleet Owner C</em> as the <em>Provider</em>.</p></li><li><p><em>Contract A ↔︎ B</em> may have an optional reference to <em>Contract B ↔︎ C</em> (alternatively <em>MSP B</em> could store a mapping of related contracts within its own backend)</p></li><li><p>The classification B2C vs. B2B is only relevant from a business perspective, technically both contracts are the same and follow the same flow.</p></li></ul>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1575616272/1575780026.png">Generic-Contract-Flow-Abstract Schema-v1.0.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/1575616272/1575616300.png">Generic-Contract-Flow-B2C+B2B Example-v1.0.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                 
+                </div>             </div> 
+            <div id="footer" role="contentinfo">
+                <section class="footer-body">
+                    <p>Document generated by Confluence on Apr 20, 2022 13:42</p>
+                    <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+                </section>
+            </div>
+        </div>     </body>
+</html>

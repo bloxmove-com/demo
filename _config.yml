@@ -1,0 +1,13 @@
+theme: jekyll-theme-cayman
+markdown: GFM
+title: Documentation
+description: GitHub Pages Documentation
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - Test
+  - Markdown
+  - README.md
